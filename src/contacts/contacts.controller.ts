@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards } from '@nestjs/common';
 import { ApiProperty, ApiTags, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ContactsService } from './contacts.service';
@@ -28,6 +28,14 @@ export class ContactsController {
   create(@Body() body: ContactDto) {
     let payload = body || {} as any;
     return this.contactsService.create(payload);
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiParam({ name: 'id', type: 'string' })
+  update(@Param('id') id: string, @Body() body: any) {
+    return this.contactsService.update(id, body);
   }
 
   @Delete(':id')

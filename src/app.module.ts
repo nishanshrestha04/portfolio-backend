@@ -10,9 +10,10 @@ import { ArticlesModule } from './articles/articles.module';
 import { ToolkitModule } from './toolkit/toolkit.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { ProfileModule } from './profile/profile.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
-  imports: [DbModule, S3Module, AuthModule, ProjectsModule, ExperiencesModule, ArticlesModule, ToolkitModule, ContactsModule, ProfileModule],
+  imports: [DbModule, S3Module, AuthModule, ProjectsModule, ExperiencesModule, ArticlesModule, ToolkitModule, ContactsModule, ProfileModule, MailModule],
   controllers: [AppController],
   providers: [AppService],
 })
