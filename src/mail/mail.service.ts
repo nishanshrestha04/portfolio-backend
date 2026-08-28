@@ -1,30 +1,22 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 @Injectable()
 export class MailService {
-  private transporter: nodemailer.Transporter;
+  private resend: Resend;
   private readonly logger = new Logger(MailService.name);
 
   constructor() {
-    this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    this.resend = new Resend(process.env.RESEND_API_KEY);
   }
 
   async sendContactEmails(contactDetails: { name: string; email: string; message: string }) {
-    if (!process.env.SMTP_USER) {
-      this.logger.warn('SMTP credentials not configured. Skipping emails.');
+    if (!process.env.RESEND_API_KEY) {
+      this.logger.warn('Resend API Key not configured. Skipping emails.');
       return;
     }
 
-    const from = process.env.SMTP_FROM || process.env.SMTP_USER;
+    const from = process.env.RESEND_FROM || process.env.SMTP_FROM || 'onboarding@resend.dev';
     
     // 1. Email to the user
     const userHtml = `
@@ -72,11 +64,31 @@ export class MailService {
     };
 
     try {
-      await this.transporter.sendMail(userMailOptions);
-      this.logger.log(`Auto-reply sent to ${contactDetails.email}`);
+      const { error: userError } = await this.resend.emails.send({
+        from: `Nishan Shrestha <${from}>`,
+        to: contactDetails.email,
+        subject: 'Message Received - Nishan Shrestha',
+        html: userHtml,
+      });
+
+      if (userError) {
+        this.logger.error(`Failed to send auto-reply: ${userError.message}`);
+      } else {
+        this.logger.log(`Auto-reply sent to ${contactDetails.email}`);
+      }
       
-      await this.transporter.sendMail(ownerMailOptions);
-      this.logger.log(`Notification email sent to owner from ${contactDetails.email}`);
+      const { error: ownerError } = await this.resend.emails.send({
+        from: `Portfolio Alerts <${from}>`,
+        to: process.env.RESEND_TO_EMAIL || process.env.SMTP_USER || 'nishanshrestha212@gmail.com',
+        subject: `New Contact Form Submission from ${contactDetails.name}`,
+        html: ownerHtml,
+      });
+
+      if (ownerError) {
+        this.logger.error(`Failed to send notification email: ${ownerError.message}`);
+      } else {
+        this.logger.log(`Notification email sent to owner from ${contactDetails.email}`);
+      }
     } catch (error) {
       this.logger.error(`Failed to send emails: ${error.message}`);
     }
