@@ -27,9 +27,7 @@ export class MailService {
               <tr>
                 <td align="center" style="padding-bottom: 40px;">
                   <div style="display: inline-block; width: 56px; height: 56px; line-height: 60px; text-align: center; border-radius: 50%; border: 1px solid rgba(0, 230, 150, 0.3); background-color: rgba(0, 230, 150, 0.05); box-shadow: 0 0 20px rgba(0,230,150,0.15);">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00E696" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
+                    <img src="https://img.icons8.com/ios-filled/50/00e696/checkmark--v1.png" width="24" height="24" style="display: block; margin: 16px auto 0;" alt="✓" />
                   </div>
                   <h1 style="margin: 24px 0 0 0; font-size: 26px; font-weight: 600; color: #f0f6fc; letter-spacing: -0.5px;"><span style="color: #00E696;">Thank you</span> for reaching out!</h1>
                 </td>
@@ -52,10 +50,7 @@ export class MailService {
               <tr>
                 <td width="48" valign="top" style="padding-right: 20px;">
                   <div style="width: 48px; height: 48px; line-height: 52px; text-align: center; border-radius: 12px; border: 1px solid #1a232c; background-color: #0d1218;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E696" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
-                      <line x1="22" y1="2" x2="11" y2="13"></line>
-                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
+                    <img src="https://img.icons8.com/ios-filled/50/00e696/paper-plane.png" width="22" height="22" style="display: block; margin: 13px auto 0;" alt="send" />
                   </div>
                 </td>
                 <td valign="top">
